@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--color-gray-50);
+  
+  /* Header Gradient */
+  --color-header-start: var(--color-indigo-500);
+  --color-header-end: var(--color-blue-600);
+  --color-header-icon: var(--color-indigo-200);
+
+  /* Tabs */
+  --color-tab-active-bg: var(--color-indigo-900);
+  --color-tab-active-border: var(--color-indigo-400);
+  --color-tab-inactive-text: var(--color-indigo-50);
+
+  /* Canvas */
+  --color-canvas-dots: var(--color-slate-300);
+}
+
+@layer utilities {
+  .hide-scrollbars {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbars::-webkit-scrollbar {
+    display: none;
+  }
+}
