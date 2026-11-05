@@ -1,20 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: var(--color-gray-50);
-  
-  /* Header Gradient */
-  --color-header-start: var(--color-indigo-500);
-  --color-header-end: var(--color-blue-600);
-  --color-header-icon: var(--color-indigo-200);
-
-  /* Tabs */
-  --color-tab-active-bg: var(--color-indigo-900);
-  --color-tab-active-border: var(--color-indigo-400);
-  --color-tab-inactive-text: var(--color-indigo-50);
-
-  /* Canvas */
-  --color-canvas-dots: var(--color-slate-300);
+  --color-background: #f8fafc;
+  --color-canvas-dots: #cbd5e1;
 }
 
 @layer utilities {
@@ -25,4 +13,18 @@
   .hide-scrollbars::-webkit-scrollbar {
     display: none;
   }
+}
+
+/* ReactFlow edge styling matching the screenshot */
+.react-flow__edge-path {
+  stroke: #60a5fa !important;
+  stroke-width: 2 !important;
+}
+
+.react-flow__handle {
+  width: 10px !important;
+  height: 10px !important;
+  background-color: #2563eb !important;
+  border: 2px solid #ffffff !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15) !important;
 }
