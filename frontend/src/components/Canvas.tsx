@@ -189,42 +189,42 @@ export function Canvas() {
     [setNodes]
   );
 
-  const updateParams = useCallback(
-    (id: string, key: string, value: any) => {
-      setNodes((currentNodes: Node[]) =>
-        currentNodes.map((node: Node) => {
-          if (node.id === id) {
-            const currentParams = (node.data?.params as Record<string, any>) || {};
-            const updatedParams = { ...currentParams, [key]: value };
-            return {
-              ...node,
-              data: {
-                ...node.data,
-                params: updatedParams,
-              },
-            };
-          }
-          return node;
-        })
-      );
+  // const updateParams = useCallback(
+  //   (id: string, key: string, value: any) => {
+  //     setNodes((currentNodes: Node[]) =>
+  //       currentNodes.map((node: Node) => {
+  //         if (node.id === id) {
+  //           const currentParams = (node.data?.params as Record<string, any>) || {};
+  //           const updatedParams = { ...currentParams, [key]: value };
+  //           return {
+  //             ...node,
+  //             data: {
+  //               ...node.data,
+  //               params: updatedParams,
+  //             },
+  //           };
+  //         }
+  //         return node;
+  //       })
+  //     );
 
-      setSelectedNode((prev) =>
-        prev && prev.id === id
-          ? {
-            ...prev,
-            data: {
-              ...prev.data,
-              params: {
-                ...((prev.data?.params as Record<string, any>) || {}),
-                [key]: value,
-              },
-            },
-          }
-          : prev
-      );
-    },
-    [setNodes]
-  );
+  //     setSelectedNode((prev) =>
+  //       prev && prev.id === id
+  //         ? {
+  //           ...prev,
+  //           data: {
+  //             ...prev.data,
+  //             params: {
+  //               ...((prev.data?.params as Record<string, any>) || {}),
+  //               [key]: value,
+  //             },
+  //           },
+  //         }
+  //         : prev
+  //     );
+  //   },
+  //   [setNodes]
+  // );
 
   const onDeleteNode = useCallback(
     (id: string) => {
