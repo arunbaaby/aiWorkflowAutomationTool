@@ -239,17 +239,32 @@ export function Canvas() {
 
   const handleRunWorkflow = async () => {
     setIsRunning(true);
-    const response = await fetch(`${API_BASE_URL}/api/workflows/run`, {
-      method: "POST",
-      body: JSON.stringify({
-        nodes,
-        edges
-      }),
-      headers: {
-        "Content-Type": "application/json"
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/workflows/run`, {
+        method: "POST",
+        body: JSON.stringify({
+          nodes,
+          edges,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error("Workflow execution failed:", data);
+        return;
       }
-    })
-  }
+
+      console.log("Workflow execution response:", data);
+    } catch (error) {
+      console.error("Network or server error while running workflow:", error);
+    } finally {
+      setIsRunning(false);
+    }
+  };
 
   return (
     <main className="flex-grow relative bg-[#f8fafc] overflow-hidden">
