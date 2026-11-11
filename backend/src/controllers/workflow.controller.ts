@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { normalizeWorkflow } from "../services/workflow.service.js";
+import { executeWorkflow, normalizeWorkflow } from "../services/workflow.service.js";
 import { topologicalSort } from "../engine/topologicalSort.js";
 
 export async function runWorkflowController(req: Request, res: Response) {
@@ -19,7 +19,9 @@ export async function runWorkflowController(req: Request, res: Response) {
 
         const executionOrder = topologicalSort(canonicalNodes, canonicalEdges);
 
-        return res.json({ success: true, executionOrder });
+        const executionResults = await executeWorkflow(canonicalNodes, executionOrder);
+
+        return res.json({ success: true, ...executionResults });
 
     } catch (error: any) {
         return res.status(400).json({ success: false, error: error.message || "Failed to execute workflow" });
