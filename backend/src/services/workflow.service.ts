@@ -1,6 +1,7 @@
 import type { CanonicalNode, CanonicalEdge } from '../types/workflow.types.js';
 import {  InputExecutor } from '../executors/input.executor.js';
 import type { SingleNodeExecutionResult } from '../executors/executor.types.js';
+import { GeminiExecutor } from '../executors/gemini.executor.js';
 
 export function normalizeWorkflow(rawNodes: any[], rawEdges: any[]): {
     nodes: CanonicalNode[];
@@ -24,18 +25,33 @@ export function normalizeWorkflow(rawNodes: any[], rawEdges: any[]): {
     return { nodes, edges };
 };
 
-export async function executeWorkflow(nodes:CanonicalNode[], executionOrder: string[]) {
+export async function executeWorkflow(nodes:CanonicalNode[],edges: CanonicalEdge[], executionOrder: string[]) {
     const inputExecutor = new InputExecutor();
+    const geminiExecutor = new GeminiExecutor();
     const context: Record<string, unknown> = {};
     const results: Record< string, SingleNodeExecutionResult> = {};
     
     for (const nodeId of executionOrder){
         const node = nodes.find((n)=>n.id === nodeId);
         if(!node) continue;
+        const incomingEdges = edges.filter((edge)=>edge.target === node.id);
+
+        const nodeContext: Record<string, unknown> = {};
+        for (const edge of incomingEdges){
+            if(context[edge.source] !== undefined){
+                nodeContext[edge.source] = context[edge.source];
+            }
+        }
         if(node.type === 'input'){
-            const result = await inputExecutor.execute(node, context);
+            const result = await inputExecutor.execute(node, nodeContext);
             results[node.id] = result;
             if(result.status === 'SUCCESS'){
+                context[node.id] = result.output;
+            }
+        }else if (node.type === 'gemini') {
+            const result = await geminiExecutor.execute(node, nodeContext);
+            results[node.id] = result;
+            if (result.status === 'SUCCESS') {
                 context[node.id] = result.output;
             }
         }

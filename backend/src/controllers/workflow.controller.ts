@@ -19,7 +19,10 @@ export async function runWorkflowController(req: Request, res: Response) {
 
         const executionOrder = topologicalSort(canonicalNodes, canonicalEdges);
 
-        const executionResults = await executeWorkflow(canonicalNodes, executionOrder);
+        console.log("Canonical Edges:", canonicalEdges);
+        console.log("Execution Order:", executionOrder);
+
+        const executionResults = await executeWorkflow(canonicalNodes, canonicalEdges, executionOrder);
 
         return res.json({ success: true, ...executionResults });
 
